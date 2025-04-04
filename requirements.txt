@@ -1,0 +1,5 @@
+flask
+dash
+plotly
+pandas
+werkzeug
