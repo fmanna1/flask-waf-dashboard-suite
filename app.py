@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template_string
 import re
 from datetime import datetime
 import pandas as pd
@@ -9,29 +9,18 @@ from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from werkzeug.serving import run_simple
 import os
 
-# -------------------- Flask App (WAF) --------------------
 flask_app = Flask(__name__)
-attack_log = []  # In-memory log
+attack_log = []
 
-# --- Patterns ---
 SQLI = [
-    r"(?i)(union\s+select)",
-    r"(?i)'?\s*or\s+1\s*=\s*1",
-    r"(?i)select\s+.*\s+from",
-    r"(?i)insert\s+into",
-    r"(?i)drop\s+table",
-    r"(?i)--",
-    r"(?i)\bOR\b.+\b=\b"
+    r"(?i)(union\s+select)", r"(?i)'?\s*or\s+1\s*=\s*1", r"(?i)select\s+.*\s+from",
+    r"(?i)insert\s+into", r"(?i)drop\s+table", r"(?i)--", r"(?i)\bOR\b.+\b=\b"
 ]
 XSS = [r"(?i)<script.*?>", r"(?i)onerror\s*=", r"(?i)<.*?alert\(.*?\)>"]
 CSRF_REQUIRED = True
 
-# --- Helper Functions ---
 def detect(payload, patterns):
-    for pattern in patterns:
-        if re.search(pattern, payload):
-            return True
-    return False
+    return any(re.search(pattern, payload) for pattern in patterns)
 
 def log_attack(ip, attack_type, payload):
     attack_log.append({
@@ -41,16 +30,13 @@ def log_attack(ip, attack_type, payload):
         "Payload": payload
     })
 
-# --- WAF Middleware ---
 @flask_app.before_request
 def waf():
     path = request.path
     if path.startswith("/dashboard") or path.startswith("/_dash") or path.startswith("/assets"):
         return
-
     ip = request.remote_addr or "unknown"
     payload = str(request.args.to_dict()) + str(request.form.to_dict())
-
     if detect(payload, SQLI):
         log_attack(ip, "SQL Injection", payload)
         return jsonify({"error": "Blocked: SQL Injection"}), 403
@@ -58,15 +44,14 @@ def waf():
         log_attack(ip, "XSS", payload)
         return jsonify({"error": "Blocked: XSS"}), 403
     if CSRF_REQUIRED and request.method == "POST":
-        token = request.headers.get("X-CSRF-Token")
+        token = request.headers.get("X-CSRF-Token") or request.form.get("csrf")
         if not token or token != "securetoken123":
             log_attack(ip, "CSRF", payload)
             return jsonify({"error": "Blocked: CSRF token missing or invalid"}), 403
 
-# --- Routes ---
 @flask_app.route('/')
 def home():
-    return "Welcome to the unified WAF app with dashboard + tester."
+    return "✅ WAF + Dashboard is running."
 
 @flask_app.route('/waf/search')
 def search():
@@ -78,30 +63,28 @@ def login():
 
 @flask_app.route('/tester', methods=["GET", "POST"])
 def tester():
-    return '''
-        <h2>🚨 WAF Attack Simulator</h2>
+    return render_template_string('''
+        <h2>🚨 WAF Attack Tester</h2>
         <form method="get" action="/waf/search">
             SQLi / XSS Input: <input name="q"><input type="submit" value="Search">
         </form><br>
         <form method="post" action="/waf/login">
             Username: <input name="username">
-            Password: <input name="password">
-            <br>CSRF Token (use: securetoken123): <input name="csrf" value="securetoken123">
+            Password: <input name="password"><br>
+            CSRF Token (use: securetoken123): <input name="csrf" value="securetoken123">
             <input type="submit" value="Login">
         </form>
-    '''
+    ''')
 
-# -------------------- Dash App --------------------
 dash_app = Dash(__name__, server=flask_app, routes_pathname_prefix='/dashboard/')
 
 dash_app.layout = html.Div([
-    html.H2("📊 WAF Dashboard (Live Auto-Refresh)"),
+    html.H2("📊 WAF Dashboard (Auto-Refresh)"),
     dcc.Interval(id='interval-update', interval=5*1000, n_intervals=0),
     dcc.Graph(id="attack-graph"),
     dash_table.DataTable(
         id='log-table',
-        columns=[],
-        page_size=10,
+        columns=[], page_size=10,
         style_table={"overflowX": "auto"},
         style_cell={"textAlign": "left"},
     )
@@ -121,7 +104,6 @@ def update_dashboard(n):
     columns = [{"name": i, "id": i} for i in df.columns]
     return fig, columns, df.to_dict("records")
 
-# -------------------- Mount Flask + Dash --------------------
 application = DispatcherMiddleware(flask_app, {
     "/dashboard": dash_app.server
 })
