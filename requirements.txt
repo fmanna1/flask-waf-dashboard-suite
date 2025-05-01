@@ -1,5 +1,4 @@
 flask
 dash
-plotly
 pandas
-werkzeug
+plotly
