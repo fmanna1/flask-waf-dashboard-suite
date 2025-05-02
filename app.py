@@ -9,9 +9,11 @@ from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from werkzeug.serving import run_simple
 import os
 
+# --- Flask App ---
 flask_app = Flask(__name__)
-attack_log = []
+attack_log = []  # In-memory log storage
 
+# --- Attack Patterns ---
 SQLI = [
     r"(?i)(union\s+select)", r"(?i)'?\s*or\s+1\s*=\s*1", r"(?i)select\s+.*\s+from",
     r"(?i)insert\s+into", r"(?i)drop\s+table", r"(?i)--", r"(?i)\bOR\b.+\b=\b"
@@ -19,6 +21,7 @@ SQLI = [
 XSS = [r"(?i)<script.*?>", r"(?i)onerror\s*=", r"(?i)<.*?alert\(.*?\)>"]
 CSRF_REQUIRED = True
 
+# --- Detection & Logging ---
 def detect(payload, patterns):
     return any(re.search(pattern, payload) for pattern in patterns)
 
@@ -30,6 +33,7 @@ def log_attack(ip, attack_type, payload):
         "Payload": payload
     })
 
+# --- WAF Filter ---
 @flask_app.before_request
 def waf():
     path = request.path
@@ -49,9 +53,16 @@ def waf():
             log_attack(ip, "CSRF", payload)
             return jsonify({"error": "Blocked: CSRF token missing or invalid"}), 403
 
+# --- Flask Routes ---
 @flask_app.route('/')
 def home():
-    return "✅ WAF + Dashboard is running."
+    return '''
+        <h2>✅ Unified WAF System</h2>
+        <ul>
+            <li><a href="/tester">🧪 Test WAF</a></li>
+            <li><a href="/dashboard">📊 View Dashboard</a></li>
+        </ul>
+    '''
 
 @flask_app.route('/waf/search')
 def search():
@@ -76,11 +87,11 @@ def tester():
         </form>
     ''')
 
+# --- Dash App (Dashboard) ---
 dash_app = Dash(__name__, server=flask_app, routes_pathname_prefix='/dashboard/')
-
 dash_app.layout = html.Div([
     html.H2("📊 WAF Dashboard (Auto-Refresh)"),
-    dcc.Interval(id='interval-update', interval=5*1000, n_intervals=0),
+    dcc.Interval(id='interval-update', interval=5000, n_intervals=0),
     dcc.Graph(id="attack-graph"),
     dash_table.DataTable(
         id='log-table',
@@ -104,6 +115,7 @@ def update_dashboard(n):
     columns = [{"name": i, "id": i} for i in df.columns]
     return fig, columns, df.to_dict("records")
 
+# --- Mount ---
 application = DispatcherMiddleware(flask_app, {
     "/dashboard": dash_app.server
 })
