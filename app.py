@@ -1,125 +1,219 @@
 from flask import Flask, request, jsonify, render_template_string
+import logging
 import re
 from datetime import datetime
-import pandas as pd
-import plotly.express as px
-from dash import Dash, dcc, html, dash_table
-from dash.dependencies import Input, Output
-from werkzeug.middleware.dispatcher import DispatcherMiddleware
-from werkzeug.serving import run_simple
 import os
 
-# --- Flask App ---
-flask_app = Flask(__name__)
-attack_log = []  # In-memory log storage
+import dash
+from dash import html, dcc, dash_table
+import pandas as pd
+import plotly.express as px
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
+from werkzeug.serving import run_simple
 
-# --- Attack Patterns ---
-SQLI = [
-    r"(?i)(union\s+select)", r"(?i)'?\s*or\s+1\s*=\s*1", r"(?i)select\s+.*\s+from",
-    r"(?i)insert\s+into", r"(?i)drop\s+table", r"(?i)--", r"(?i)\bOR\b.+\b=\b"
+# ------------------- Flask App Setup -------------------
+app = Flask(__name__)
+
+# --- Logging Setup ---
+LOG_FILE = "waf_logs.log"
+logging.basicConfig(
+    filename=LOG_FILE,
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - Blocked %(message)s"
+)
+
+SQLI_PATTERNS = [
+    r"(?i)(\\bor\\b|\\band\\b).*(=|\\bLIKE\\b|\\bIN\\b|\\bIS\\b|\\bNULL\\b)",
+    r"(?i)(union(\\s+all)?(\\s+select))",
+    r"(?i)select.+from",
+    r"(?i)insert\\s+into",
+    r"(?i)drop\\s+table",
+    r"(?i)'\\s*or\\s*'1'='1"
 ]
-XSS = [r"(?i)<script.*?>", r"(?i)onerror\s*=", r"(?i)<.*?alert\(.*?\)>"]
-CSRF_REQUIRED = True
 
-# --- Detection & Logging ---
-def detect(payload, patterns):
-    return any(re.search(pattern, payload) for pattern in patterns)
+XSS_PATTERNS = [
+    r"(?i)<script.*?>.*?</script.*?>",
+    r"(?i)javascript:",
+    r"(?i)onerror\\s*=",
+    r"(?i)<img\\s+.*?on\\w+=.*?>"
+]
 
-def log_attack(ip, attack_type, payload):
-    attack_log.append({
-        "Timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        "Attack Type": attack_type,
-        "IP Address": ip,
-        "Payload": payload
-    })
+CSRF_TOKENS_REQUIRED = True
 
-# --- WAF Filter ---
-@flask_app.before_request
-def waf():
-    path = request.path
-    if path.startswith("/dashboard") or path.startswith("/_dash") or path.startswith("/assets"):
+@app.before_request
+def waf_filter():
+    if request.path.startswith('/dashboard') or request.path == '/tester':
         return
     ip = request.remote_addr or "unknown"
-    payload = str(request.args.to_dict()) + str(request.form.to_dict())
-    if detect(payload, SQLI):
-        log_attack(ip, "SQL Injection", payload)
-        return jsonify({"error": "Blocked: SQL Injection"}), 403
-    if detect(payload, XSS):
-        log_attack(ip, "XSS", payload)
-        return jsonify({"error": "Blocked: XSS"}), 403
-    if CSRF_REQUIRED and request.method == "POST":
-        token = request.headers.get("X-CSRF-Token") or request.form.get("csrf")
+    full_data = str(request.args.to_dict()) + str(request.form.to_dict())
+
+    for pattern in SQLI_PATTERNS:
+        if re.search(pattern, full_data):
+            logging.warning(f"SQL Injection attack from {ip}. Payload: {full_data}")
+            return jsonify({"error": "Blocked: SQL Injection detected"}), 403
+
+    for pattern in XSS_PATTERNS:
+        if re.search(pattern, full_data):
+            logging.warning(f"XSS attack from {ip}. Payload: {full_data}")
+            return jsonify({"error": "Blocked: XSS attempt detected"}), 403
+
+    if CSRF_TOKENS_REQUIRED and request.method == "POST":
+        token = request.headers.get("X-CSRF-Token")
         if not token or token != "securetoken123":
-            log_attack(ip, "CSRF", payload)
+            logging.warning(f"CSRF attack from {ip}. Payload: {full_data}")
             return jsonify({"error": "Blocked: CSRF token missing or invalid"}), 403
 
-# --- Flask Routes ---
-@flask_app.route('/')
-def home():
-    return '''
-        <h2>✅ Unified WAF System</h2>
-        <ul>
-            <li><a href="/tester">🧪 Test WAF</a></li>
-            <li><a href="/dashboard">📊 View Dashboard</a></li>
-        </ul>
-    '''
+@app.route('/')
+def index():
+    return "Welcome to the combined WAF + Dashboard app."
 
-@flask_app.route('/waf/search')
-def search():
-    return jsonify({"message": "Search executed successfully (if not blocked)."})
+@app.route('/waf/search')
+def waf_search():
+    return jsonify({"message": "Search executed (if not blocked)."})
 
-@flask_app.route('/waf/login', methods=['POST'])
-def login():
+@app.route('/waf/login', methods=['POST'])
+def waf_login():
     return jsonify({"message": "Login successful (if not blocked)."})
 
-@flask_app.route('/tester', methods=["GET", "POST"])
+@app.route('/tester', methods=['GET', 'POST'])
 def tester():
-    return render_template_string('''
-        <h2>🚨 WAF Attack Tester</h2>
-        <form method="get" action="/waf/search">
-            SQLi / XSS Input: <input name="q"><input type="submit" value="Search">
-        </form><br>
-        <form method="post" action="/waf/login">
-            Username: <input name="username">
-            Password: <input name="password"><br>
-            CSRF Token (use: securetoken123): <input name="csrf" value="securetoken123">
-            <input type="submit" value="Login">
-        </form>
-    ''')
+    result = ""
+    if request.method == "GET" and "q" in request.args:
+        import requests
+        try:
+            q = request.args.get("q", "")
+            r = requests.get(f"http://127.0.0.1:5000/waf/search", params={"q": q})
+            result = f"GET /waf/search → {r.status_code} | {r.text}"
+        except Exception as e:
+            result = str(e)
+    elif request.method == "POST":
+        try:
+            uname = request.form.get("username", "")
+            pwd = request.form.get("password", "")
+            headers = {"X-CSRF-Token": request.form.get("csrf_token", "")}
+            data = {"username": uname, "password": pwd}
+            import requests
+            r = requests.post("http://127.0.0.1:5000/waf/login", data=data, headers=headers)
+            result = f"POST /waf/login → {r.status_code} | {r.text}"
+        except Exception as e:
+            result = str(e)
 
-# --- Dash App (Dashboard) ---
-dash_app = Dash(__name__, server=flask_app, routes_pathname_prefix='/dashboard/')
+    return render_template_string("""
+        <h2>🧪 WAF Attack Tester</h2>
+        <form method="get">
+            <b>SQLi/XSS via GET</b><br>
+            <input type="text" name="q" placeholder="Payload here" size="60"/>
+            <input type="submit" value="Test GET" />
+        </form>
+        <br><hr><br>
+        <form method="post">
+            <b>CSRF via POST</b><br>
+            Username: <input type="text" name="username" />
+            Password: <input type="password" name="password" />
+            CSRF Token: <input type="text" name="csrf_token" value="securetoken123" />
+            <input type="submit" value="Test POST" />
+        </form>
+        <br><br>
+        <textarea rows="10" cols="100">{{result}}</textarea>
+    """, result=result)
+
+# ------------------- Dash App -------------------
+dash_app = dash.Dash(__name__, server=app, routes_pathname_prefix='/dashboard/')
+dash_app.title = "WAF Dashboard"
+
+def parse_logs():
+    if not os.path.exists(LOG_FILE):
+        return pd.DataFrame(columns=["timestamp", "level", "attack_type", "ip", "payload"])
+
+    data = []
+    with open(LOG_FILE, 'r') as file:
+        for line in file:
+            match = re.search(r'^(.*?) - (\w+) - Blocked (.*?) attack from (.*?)\. Payload: (.*)$', line.strip())
+            if match:
+                timestamp, level, attack_type, ip, payload = match.groups()
+                data.append({
+                    "timestamp": timestamp,
+                    "level": level,
+                    "attack_type": attack_type,
+                    "ip": ip,
+                    "payload": payload
+                })
+    return pd.DataFrame(data)
+
+def generate_recommendations(df):
+    if df.empty:
+        return "✅ All clear. No suspicious activity logged."
+
+    recs = []
+    ip_counts = df['ip'].value_counts()
+    csrf_count = len(df[df["attack_type"] == "CSRF"])
+    sqli_count = len(df[df["attack_type"] == "SQL Injection"])
+
+    if any(ip_counts > 5):
+        recs.append("⚠️ Consider rate-limiting requests from high-frequency IPs.")
+    if csrf_count > 3:
+        recs.append("🛡️ Consider enforcing or rotating CSRF tokens more frequently.")
+    if sqli_count > 5:
+        recs.append("🔒 SQLi patterns detected frequently. Consider IP blocking or stricter input validation.")
+
+    return "\n".join(recs) if recs else "✅ System is stable. No urgent recommendations."
+
 dash_app.layout = html.Div([
-    html.H2("📊 WAF Dashboard (Auto-Refresh)"),
-    dcc.Interval(id='interval-update', interval=5000, n_intervals=0),
-    dcc.Graph(id="attack-graph"),
-    dash_table.DataTable(
-        id='log-table',
-        columns=[], page_size=10,
-        style_table={"overflowX": "auto"},
-        style_cell={"textAlign": "left"},
-    )
+    html.H1("🛡️ WAF Dashboard", style={"textAlign": "center"}),
+    dcc.Interval(id='interval-component', interval=5000, n_intervals=0),
+    dcc.Dropdown(id='attack-type-dropdown', options=[
+        {'label': 'SQL Injection', 'value': 'SQL Injection'},
+        {'label': 'XSS', 'value': 'XSS'},
+        {'label': 'CSRF', 'value': 'CSRF'}
+    ], multi=True, placeholder="Filter by attack type..."),
+    dcc.Graph(id='attack-count-chart'),
+    dash_table.DataTable(id='log-table',
+                         columns=[
+                             {"name": "Timestamp", "id": "timestamp"},
+                             {"name": "Attack Type", "id": "attack_type"},
+                             {"name": "IP", "id": "ip"},
+                             {"name": "Payload", "id": "payload"},
+                         ],
+                         style_table={'overflowX': 'auto'},
+                         style_cell={'textAlign': 'left'},
+                         page_size=10
+    ),
+    html.Pre(id='recommendation-panel', style={"backgroundColor": "#f9f9f9", "padding": "10px"})
 ])
 
 @dash_app.callback(
-    [Output("attack-graph", "figure"),
-     Output("log-table", "columns"),
-     Output("log-table", "data")],
-    [Input("interval-update", "n_intervals")]
+    [dash.dependencies.Output('log-table', 'data'),
+     dash.dependencies.Output('attack-count-chart', 'figure'),
+     dash.dependencies.Output('recommendation-panel', 'children')],
+    [dash.dependencies.Input('attack-type-dropdown', 'value'),
+     dash.dependencies.Input('interval-component', 'n_intervals')]
 )
-def update_dashboard(n):
-    df = pd.DataFrame(attack_log)
+def update_dashboard(filter_types, _):
+    df = parse_logs()
+    if filter_types:
+        df = df[df["attack_type"].isin(filter_types)]
+
     if df.empty:
-        df = pd.DataFrame(columns=["Timestamp", "Attack Type", "IP Address", "Payload"])
-    fig = px.histogram(df, x="Attack Type", color="Attack Type", title="Attack Frequency")
-    columns = [{"name": i, "id": i} for i in df.columns]
-    return fig, columns, df.to_dict("records")
+        fig = {
+            "layout": {
+                "title": "No Attack Logs Yet",
+                "xaxis": {"visible": False},
+                "yaxis": {"visible": False},
+                "annotations": [{
+                    "text": "No data available",
+                    "xref": "paper", "yref": "paper",
+                    "showarrow": False,
+                    "font": {"size": 20}
+                }]
+            }
+        }
+        return [], fig, "✅ No suspicious activity yet."
 
-# --- Mount ---
-application = DispatcherMiddleware(flask_app, {
-    "/dashboard": dash_app.server
-})
+    fig = px.histogram(df, x="attack_type", color="attack_type", title="Attack Type Frequency")
+    recommendations = generate_recommendations(df)
+    return df.to_dict("records"), fig, recommendations
 
+# --- Render-friendly Run ---
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
-    run_simple("0.0.0.0", port, application, use_debugger=True, use_reloader=True)
+    app.run(host="0.0.0.0", port=port, debug=False)
