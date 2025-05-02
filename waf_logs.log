@@ -1,0 +1,165 @@
+2025-03-25 11:09:36,926 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-03-25 11:09:36,926 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-25 11:09:36,926 - INFO -  * Restarting with stat
+2025-03-25 11:09:37,132 - WARNING -  * Debugger is active!
+2025-03-25 11:09:37,135 - INFO -  * Debugger PIN: 161-776-467
+2025-03-25 11:09:47,189 - INFO - 127.0.0.1 - - [25/Mar/2025 11:09:47] "GET /search?q='%20OR%201=1%20-- HTTP/1.1" 200 -
+2025-03-25 11:10:25,163 - INFO -  * Detected change in 'C:\\Users\\FRANCIS\\AppData\\Roaming\\Python\\Python310\\site-packages\\werkzeug\\routing\\converters.py', reloading
+2025-03-25 11:10:25,226 - INFO -  * Restarting with stat
+2025-03-25 11:10:25,491 - WARNING -  * Debugger is active!
+2025-03-25 11:10:25,493 - INFO -  * Debugger PIN: 161-776-467
+2025-03-25 11:11:10,361 - INFO -  * Detected change in 'C:\\Users\\FRANCIS\\Desktop\\Babe\\dashboard.py', reloading
+2025-03-25 11:11:10,388 - INFO -  * Restarting with stat
+2025-03-25 11:11:10,610 - WARNING -  * Debugger is active!
+2025-03-25 11:11:10,610 - INFO -  * Debugger PIN: 161-776-467
+2025-03-25 11:13:19,715 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-03-25 11:13:19,715 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-25 11:13:19,716 - INFO -  * Restarting with stat
+2025-03-25 11:13:19,923 - WARNING -  * Debugger is active!
+2025-03-25 11:13:19,926 - INFO -  * Debugger PIN: 161-776-467
+2025-03-25 11:14:53,198 - INFO -  * Detected change in 'C:\\Users\\FRANCIS\\Desktop\\Babe\\dashboard.py', reloading
+2025-03-25 11:14:53,233 - INFO -  * Restarting with stat
+2025-03-25 11:14:53,443 - WARNING -  * Debugger is active!
+2025-03-25 11:14:53,443 - INFO -  * Debugger PIN: 161-776-467
+2025-03-25 11:16:25,789 - INFO - 127.0.0.1 - - [25/Mar/2025 11:16:25] "GET /search?q='%20OR%201=1%20-- HTTP/1.1" 200 -
+2024-03-25 12:00:00,999 - WARNING - Blocked SQL Injection attack from 127.0.0.1. Payload: ' OR 1=1 --
+2024-03-25 12:00:00,999 - WARNING - Blocked SQL Injection attack from 127.0.0.1. Payload: ' OR 1=1 --
+
+2025-03-25 11:32:56,852 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-03-25 11:32:56,853 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-25 11:32:56,854 - INFO -  * Restarting with stat
+2025-03-25 11:32:57,050 - WARNING -  * Debugger is active!
+2025-03-25 11:32:57,052 - INFO -  * Debugger PIN: 161-776-467
+2025-03-25 11:35:50,704 - INFO - 127.0.0.1 - - [25/Mar/2025 11:35:50] "GET /search?q='%20OR%201=1%20-- HTTP/1.1" 200 -
+2025-03-25 11:35:50,979 - INFO - 127.0.0.1 - - [25/Mar/2025 11:35:50] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-03-25 11:36:27,276 - INFO - 127.0.0.1 - - [25/Mar/2025 11:36:27] "GET /search?q='%20OR%201=1%20-- HTTP/1.1" 200 -
+2025-03-25 11:37:45,399 - INFO - 127.0.0.1 - - [25/Mar/2025 11:37:45] "GET /search?q='%20OR%201=1%20-- HTTP/1.1" 200 -
+2025-03-25 11:41:01,516 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-03-25 11:41:01,516 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-25 11:41:01,516 - INFO -  * Restarting with stat
+2025-03-25 11:41:01,733 - WARNING -  * Debugger is active!
+2025-03-25 11:41:01,738 - INFO -  * Debugger PIN: 161-776-467
+2025-03-25 11:41:18,915 - WARNING - Blocked SQL Injection attack from 127.0.0.1. Payload: {'q': "' OR 1=1 --"}
+2025-03-25 11:41:18,915 - INFO - 127.0.0.1 - - [25/Mar/2025 11:41:18] "[31m[1mGET /search?q='%20OR%201=1%20-- HTTP/1.1[0m" 403 -
+2025-03-25 11:41:38,257 - WARNING - Blocked SQL Injection attack from 127.0.0.1. Payload: {'q': "' OR 1=1 --"}
+2025-03-25 11:41:38,257 - INFO - 127.0.0.1 - - [25/Mar/2025 11:41:38] "[31m[1mGET /search?q='%20OR%201=1%20-- HTTP/1.1[0m" 403 -
+2025-03-25 11:44:45,323 - WARNING - Blocked XSS attack from 127.0.0.1. Payload: {'q': "<script>alert('x')</script>"}
+2025-03-25 11:44:45,323 - INFO - 127.0.0.1 - - [25/Mar/2025 11:44:45] "[31m[1mGET /search?q=<script>alert('x')</script> HTTP/1.1[0m" 403 -
+2025-03-25 11:48:41,804 - INFO - 127.0.0.1 - - [25/Mar/2025 11:48:41] "POST /login HTTP/1.1" 200 -
+2025-03-25 11:50:09,345 - INFO -  * Detected change in 'C:\\Users\\FRANCIS\\Desktop\\Babe\\test_csrf.py', reloading
+2025-03-25 11:50:09,374 - INFO -  * Restarting with stat
+2025-03-25 11:50:09,595 - WARNING -  * Debugger is active!
+2025-03-25 11:50:09,596 - INFO -  * Debugger PIN: 161-776-467
+2025-03-25 11:51:14,575 - INFO -  * Detected change in 'C:\\Users\\FRANCIS\\Desktop\\Babe\\test_csrf.py', reloading
+2025-03-25 11:51:14,599 - INFO -  * Restarting with stat
+2025-03-25 11:51:14,813 - WARNING -  * Debugger is active!
+2025-03-25 11:51:14,813 - INFO -  * Debugger PIN: 161-776-467
+2025-03-25 11:51:34,711 - INFO - 127.0.0.1 - - [25/Mar/2025 11:51:34] "POST /login HTTP/1.1" 200 -
+2025-03-25 11:51:34,727 - WARNING - Blocked CSRF attack from 127.0.0.1. Payload: {'username': 'admin', 'password': '1234'}
+2025-03-25 11:51:34,727 - INFO - 127.0.0.1 - - [25/Mar/2025 11:51:34] "[31m[1mPOST /login HTTP/1.1[0m" 403 -
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 161-776-467
+WARNING:root:Blocked SQL Injection attack from 127.0.0.1. Payload: username=%27+OR+1%3D1+--&password=any{}
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2025 13:53:00] "[31m[1mPOST /login HTTP/1.1[0m" 403 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2025 13:53:00] "[33mPOST /login HTTP/1.1[0m" 404 -
+WARNING:root:Blocked CSRF attack from 127.0.0.1. Payload: username=admin&password=pass{}
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2025 13:53:00] "[31m[1mPOST /login HTTP/1.1[0m" 403 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2025 13:53:00] "[33mPOST /login HTTP/1.1[0m" 404 -
+INFO:werkzeug: * Detected change in 'C:\\Users\\FRANCIS\\Desktop\\Babe\\test_attacks.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 161-776-467
+WARNING:root:Blocked SQL Injection attack from 127.0.0.1. Payload: username=%27+OR+1%3D1+--&password=any{}
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2025 13:54:49] "[31m[1mPOST /login.php HTTP/1.1[0m" 403 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2025 13:54:49] "POST /login.php HTTP/1.1" 200 -
+WARNING:root:Blocked CSRF attack from 127.0.0.1. Payload: username=admin&password=pass{}
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2025 13:54:49] "[31m[1mPOST /login.php HTTP/1.1[0m" 403 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2025 13:54:49] "POST /login.php HTTP/1.1" 200 -
+WARNING:root:Blocked XSS attack from 127.0.0.1. Payload: {'q': '<script>alert(1)</script>'}
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2025 13:57:43] "[31m[1mGET /login.php?q=<script>alert(1)</script> HTTP/1.1[0m" 403 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2025 13:57:44] "GET /favicon.ico HTTP/1.1" 200 -
+2025-03-27 11:26:07,175 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-03-27 11:26:07,176 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-27 11:26:07,178 - INFO -  * Restarting with stat
+2025-03-27 11:26:07,552 - WARNING -  * Debugger is active!
+2025-03-27 11:26:07,560 - INFO -  * Debugger PIN: 161-776-467
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 161-776-467
+2025-05-01 15:03:23,941 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-05-01 15:03:23,941 - INFO - [33mPress CTRL+C to quit[0m
+2025-05-01 15:03:23,943 - INFO -  * Restarting with stat
+2025-05-01 15:03:24,291 - WARNING -  * Debugger is active!
+2025-05-01 15:03:24,291 - INFO -  * Debugger PIN: 161-776-467
+2025-05-01 15:11:03,036 - INFO - 127.0.0.1 - - [01/May/2025 15:11:03] "[33mGET /waf/search?q='%20OR%201=1%20-- HTTP/1.1[0m" 404 -
+2025-05-01 15:14:52,760 - INFO - 127.0.0.1 - - [01/May/2025 15:14:52] "[33mGET /waf/search?q='%20OR%201%3D1%20-- HTTP/1.1[0m" 404 -
+2025-05-01 15:18:50,977 - INFO - 127.0.0.1 - - [01/May/2025 15:18:50] "GET /search?q='%20OR%201=1%20-- HTTP/1.1" 200 -
+2025-05-01 15:20:52,032 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-05-01 15:20:52,032 - INFO - [33mPress CTRL+C to quit[0m
+2025-05-01 15:20:52,033 - INFO -  * Restarting with stat
+2025-05-01 15:20:52,232 - WARNING -  * Debugger is active!
+2025-05-01 15:20:52,236 - INFO -  * Debugger PIN: 161-776-467
+2025-05-01 15:22:26,455 - INFO - 127.0.0.1 - - [01/May/2025 15:22:26] "GET / HTTP/1.1" 200 -
+2025-05-01 15:22:26,650 - INFO - 127.0.0.1 - - [01/May/2025 15:22:26] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-05-01 15:23:25,209 - INFO - 127.0.0.1 - - [01/May/2025 15:23:25] "[33mGET /waf/search?q='%20OR%201=1%20-- HTTP/1.1[0m" 404 -
+2025-05-01 15:26:38,187 - INFO - Blocked [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-05-01 15:26:38,187 - INFO - Blocked [33mPress CTRL+C to quit[0m
+2025-05-01 15:26:38,188 - INFO - Blocked  * Restarting with stat
+2025-05-01 15:26:38,397 - WARNING - Blocked  * Debugger is active!
+2025-05-01 15:26:38,400 - INFO - Blocked  * Debugger PIN: 161-776-467
+2025-05-01 15:26:53,486 - WARNING - Blocked SQL Injection attack from 127.0.0.1. Payload: {'q': "' OR 1=1 --"}{}
+2025-05-01 15:26:53,487 - INFO - Blocked 127.0.0.1 - - [01/May/2025 15:26:53] "[31m[1mGET /waf/search?q='%20OR%201=1%20-- HTTP/1.1[0m" 403 -
+2025-05-01 15:28:40,358 - WARNING - Blocked SQL Injection attack from 127.0.0.1. Payload: {'q': "' OR 1=1 --"}{}
+2025-05-01 15:28:40,358 - INFO - Blocked 127.0.0.1 - - [01/May/2025 15:28:40] "[31m[1mGET /waf/search?q='%20OR%201%3D1%20-- HTTP/1.1[0m" 403 -
+2025-05-01 15:28:40,713 - WARNING - Blocked SQL Injection attack from 127.0.0.1. Payload: {'q': "1' OR '1'='1"}{}
+2025-05-01 15:28:40,713 - INFO - Blocked 127.0.0.1 - - [01/May/2025 15:28:40] "[31m[1mGET /waf/search?q=1'%20OR%20'1'%3D'1 HTTP/1.1[0m" 403 -
+2025-05-01 15:28:41,064 - WARNING - Blocked SQL Injection attack from 127.0.0.1. Payload: {'q': 'UNION SELECT username, password FROM users'}{}
+2025-05-01 15:28:41,064 - INFO - Blocked 127.0.0.1 - - [01/May/2025 15:28:41] "[31m[1mGET /waf/search?q=UNION+SELECT+username,+password+FROM+users HTTP/1.1[0m" 403 -
+2025-05-01 15:28:41,401 - WARNING - Blocked SQL Injection attack from 127.0.0.1. Payload: {'q': 'DROP TABLE users'}{}
+2025-05-01 15:28:41,401 - INFO - Blocked 127.0.0.1 - - [01/May/2025 15:28:41] "[31m[1mGET /waf/search?q=DROP+TABLE+users HTTP/1.1[0m" 403 -
+2025-05-01 15:29:14,719 - WARNING - Blocked XSS attack from 127.0.0.1. Payload: {'q': "<script>alert('x')</script>"}{}
+2025-05-01 15:29:14,719 - INFO - Blocked 127.0.0.1 - - [01/May/2025 15:29:14] "[31m[1mGET /waf/search?q=<script>alert('x')</script> HTTP/1.1[0m" 403 -
+2025-05-01 15:29:15,084 - WARNING - Blocked XSS attack from 127.0.0.1. Payload: {'q': '<img src=x onerror=alert(1)>'}{}
+2025-05-01 15:29:15,084 - INFO - Blocked 127.0.0.1 - - [01/May/2025 15:29:15] "[31m[1mGET /waf/search?q=<img%20src%3Dx%20onerror%3Dalert(1)> HTTP/1.1[0m" 403 -
+2025-05-01 15:29:15,452 - WARNING - Blocked XSS attack from 127.0.0.1. Payload: {'q': '<a href="javascript:alert(1)">Click</a>'}{}
+2025-05-01 15:29:15,452 - INFO - Blocked 127.0.0.1 - - [01/May/2025 15:29:15] "[31m[1mGET /waf/search?q=<a%20href%3D"javascript:alert(1)">Click</a> HTTP/1.1[0m" 403 -
+2025-05-01 15:30:08,557 - WARNING - Blocked XSS attack from 127.0.0.1. Payload: {'q': '<img src=x onerror=alert(1)>'}{}
+2025-05-01 15:30:08,557 - INFO - Blocked 127.0.0.1 - - [01/May/2025 15:30:08] "[31m[1mGET /waf/search?q=<img%20src%3Dx%20onerror%3Dalert(1)> HTTP/1.1[0m" 403 -
+2025-05-01 15:30:31,758 - WARNING - Blocked CSRF attack from 127.0.0.1. Payload: {}{'username': 'admin', 'password': '123'}
+2025-05-01 15:30:31,758 - INFO - Blocked 127.0.0.1 - - [01/May/2025 15:30:31] "[31m[1mPOST /waf/login HTTP/1.1[0m" 403 -
+2025-05-01 15:30:36,217 - WARNING - Blocked CSRF attack from 127.0.0.1. Payload: {}{'username': 'admin', 'password': '123'}
+2025-05-01 15:30:36,217 - INFO - Blocked 127.0.0.1 - - [01/May/2025 15:30:36] "[31m[1mPOST /waf/login HTTP/1.1[0m" 403 -
+2025-05-01 15:30:57,436 - INFO - Blocked 127.0.0.1 - - [01/May/2025 15:30:57] "POST /waf/login HTTP/1.1" 200 -
+2025-05-01 15:31:24,912 - WARNING - Blocked SQL Injection attack from 127.0.0.1. Payload: {'q': "<script>alert('SQLi')</script> OR 1=1"}{}
+2025-05-01 15:31:24,912 - INFO - Blocked 127.0.0.1 - - [01/May/2025 15:31:24] "[31m[1mGET /waf/search?q=<script>alert('SQLi')</script>%20OR%201%3D1 HTTP/1.1[0m" 403 -
+2025-05-01 15:46:42,110 - INFO - Blocked [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-05-01 15:46:42,110 - INFO - Blocked [33mPress CTRL+C to quit[0m
+2025-05-01 15:46:42,111 - INFO - Blocked  * Restarting with stat
+2025-05-01 15:46:42,340 - WARNING - Blocked  * Debugger is active!
+2025-05-01 15:46:42,343 - INFO - Blocked  * Debugger PIN: 161-776-467
+2025-05-01 15:46:48,420 - INFO - Blocked 127.0.0.1 - - [01/May/2025 15:46:48] "GET / HTTP/1.1" 200 -
+2025-05-01 15:46:49,507 - INFO - Blocked 127.0.0.1 - - [01/May/2025 15:46:49] "GET / HTTP/1.1" 200 -
+2025-05-01 15:46:50,285 - INFO - Blocked 127.0.0.1 - - [01/May/2025 15:46:50] "GET / HTTP/1.1" 200 -
+2025-05-01 15:46:50,985 - INFO - Blocked 127.0.0.1 - - [01/May/2025 15:46:50] "GET / HTTP/1.1" 200 -
+2025-05-01 15:46:51,682 - INFO - Blocked 127.0.0.1 - - [01/May/2025 15:46:51] "GET / HTTP/1.1" 200 -
+2025-05-01 15:47:02,528 - INFO - Blocked 127.0.0.1 - - [01/May/2025 15:47:02] "GET /tester HTTP/1.1" 200 -
+2025-05-01 16:57:59,091 - INFO - Blocked  * Detected change in 'C:\\Users\\FRANCIS\\Desktop\\Babe\\flask-waf-dashboard-suite\\app.py', reloading
+2025-05-01 16:57:59,165 - INFO - Blocked  * Restarting with stat
+2025-05-01 16:57:59,500 - WARNING - Blocked  * Debugger is active!
+2025-05-01 16:57:59,504 - INFO - Blocked  * Debugger PIN: 161-776-467
